@@ -34,15 +34,23 @@ class ESIOS_API(object):
 
         return headers
 
-    def get_pvpc_data(self):
+    def get_pvpc_data(self, decimals):
+        """ Returns the pvcp elements in the current day.
+
+        Parameters:
+        decimals - int - Decimals of each value in PVPC
+
+        Return:
+        Array of PVPC elements.
+        """
         response = requests.get(url=URL_GET_PVPC_CURVE, headers=self.__default_headers__())
 
         aPVPC = []
         for element in response.json()["PVPC"]:
             pvpc = PVPC(element['Dia'], element['Hora'],
-                        round(float(element['GEN'].replace(",", ".")) / 1000, 5),
-                        round(float(element['NOC'].replace(",", ".")) / 1000, 5),
-                        round(float(element['VHC'].replace(",", ".")) / 1000, 5))
+                        round(float(element['GEN'].replace(",", ".")) / 1000, decimals),
+                        round(float(element['NOC'].replace(",", ".")) / 1000, decimals),
+                        round(float(element['VHC'].replace(",", ".")) / 1000, decimals))
             aPVPC.append(pvpc)
 
         return aPVPC

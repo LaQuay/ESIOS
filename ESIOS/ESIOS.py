@@ -1,3 +1,6 @@
+import sys
+
+
 class PVPC(object):
     def __init__(self, day, hour, gen, noc, vhc):
         """ Initialize a PVPC object.
@@ -20,13 +23,13 @@ class PVPC(object):
         return f"{self.day} | {self.hour} | {self.gen} | {self.noc} | {self.vhc}"
 
 
-def get_minimum_consecutives(a_PVPC, type, n):
-    """ Returns the lowest n consecutive elements in the aPVPC desired type.
+def get_minimum_consecutives(a_PVPC, type, n_consecutives):
+    """ Returns the lowest n_consecutive elements in the aPVPC desired type.
 
     Parameters:
     a_PVPC - PVPC - Array of PVPC elements
     type - str - GEN, NOC or VHC
-    n - int - Desired minimum consecutive elements
+    n_consecutive - int - Desired minimum consecutive elements
 
     Return:
     Array of PVPC elements.
@@ -35,7 +38,7 @@ def get_minimum_consecutives(a_PVPC, type, n):
     if not a_PVPC:
         raise Exception("Error: aPCPC should not be empty")
 
-    if n > len(a_PVPC) or n < 1:
+    if n_consecutives > len(a_PVPC) or n_consecutives < 1:
         raise Exception("Error: 0 < n <= len(aPCPC)")
 
     if not (type == "GEN" or type == "NOC" or type == "VHC"):
@@ -43,7 +46,7 @@ def get_minimum_consecutives(a_PVPC, type, n):
 
     minAccumulated = 0
     aMinAccumulated = []
-    minTotal = 1000
+    minTotal = sys.maxsize
     aMinTotal = []
 
     for j in range(len(a_PVPC)):
@@ -56,7 +59,7 @@ def get_minimum_consecutives(a_PVPC, type, n):
                 minAccumulated += value.vhc
             aMinAccumulated.append(value)
 
-            if (i + 1) % n == 0:
+            if (i + 1) % n_consecutives == 0:
                 if minAccumulated < minTotal:
                     minTotal = minAccumulated
                     aMinTotal = aMinAccumulated

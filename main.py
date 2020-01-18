@@ -9,8 +9,8 @@ with open('config.json') as config_file:
 
 mESIOS = ESIOS_API(TOKEN)
 
-aPVPC = mESIOS.get_pvpc_data()
+aPVPC = mESIOS.get_pvpc_data(decimals=5)
 
-aMinPVPC = get_minimum_consecutives(aPVPC, "GEN", 3)
+aMinPVPC = get_minimum_consecutives(aPVPC, type="GEN", n_consecutives=3)
 for pvpc in aMinPVPC:
     print(pvpc)
