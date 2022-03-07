@@ -48,9 +48,8 @@ class ESIOS_API(object):
         aPVPC = []
         for element in response.json()["PVPC"]:
             pvpc = PVPC(element['Dia'], element['Hora'],
-                        round(float(element['GEN'].replace(",", ".")) / 1000, decimals),
-                        round(float(element['NOC'].replace(",", ".")) / 1000, decimals),
-                        round(float(element['VHC'].replace(",", ".")) / 1000, decimals))
+                        round(float(element['PCB'].replace(",", ".")) / 1000, decimals),
+                        round(float(element['CYM'].replace(",", ".")) / 1000, decimals))
             aPVPC.append(pvpc)
 
         return aPVPC

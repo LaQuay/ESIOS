@@ -2,25 +2,23 @@ import sys
 
 
 class PVPC(object):
-    def __init__(self, day, hour, gen, noc, vhc):
+    def __init__(self, day, hour, pcb, cym):
         """ Initialize a PVPC object.
 
         Parameters:
         day - str - The day of the PVPC [DD/MM/YYYY]
         hour - str - The hour of this item [HH:MM]
-        gen - float - The €/kWh of the default fare (no DH) [0,10895]
-        noc - float - The €/kWh of the DHA fare (2-period) [0,10895]
-        vhc - float - The €/kWh of the DHS fare (3-period) [0,10895]
+        pcb - float - The €/kWh of the default fare Peninsula, Canarias, Baleares [0,10895]
+        cym - float - The €/kWh of the default fare Ceuta, Melilla [0,10895]
         """
 
         self.day = day
         self.hour = hour
-        self.gen = gen
-        self.noc = noc
-        self.vhc = vhc
+        self.pcb = pcb
+        self.cym = cym
 
     def __str__(self):
-        return f"{self.day} | {self.hour} | {self.gen} | {self.noc} | {self.vhc}"
+        return f"{self.day} | {self.hour} | {self.pcb} | {self.cym}"
 
 
 def get_minimum_consecutives(a_PVPC, type, n_consecutives):
@@ -28,7 +26,7 @@ def get_minimum_consecutives(a_PVPC, type, n_consecutives):
 
     Parameters:
     a_PVPC - PVPC - Array of PVPC elements
-    type - str - GEN, NOC or VHC
+    type - str - PCB or CYM
     n_consecutive - int - Desired minimum consecutive elements
 
     Return:
@@ -41,30 +39,28 @@ def get_minimum_consecutives(a_PVPC, type, n_consecutives):
     if n_consecutives > len(a_PVPC) or n_consecutives < 1:
         raise Exception("Error: 0 < n <= len(aPCPC)")
 
-    if not (type == "GEN" or type == "NOC" or type == "VHC"):
-        raise Exception("Error: type should be GEN or NOC or VHC")
+    if not (type == "PCB" or type == "CYM"):
+        raise Exception("Error: type should be PCB or CYM")
 
-    minAccumulated = 0
-    aMinAccumulated = []
-    minTotal = sys.maxsize
-    aMinTotal = []
+    min_accumulated = 0
+    min_accumulated_array = []
+    min_total = sys.maxsize
+    min_total_array = []
 
     for j in range(len(a_PVPC)):
         for i, value in enumerate(a_PVPC):
-            if type == "GEN":
-                minAccumulated += value.gen
-            elif type == "NOC":
-                minAccumulated += value.noc
-            elif type == "VHC":
-                minAccumulated += value.vhc
-            aMinAccumulated.append(value)
+            if type == "PCB":
+                min_accumulated += value.pcb
+            elif type == "CYM":
+                min_accumulated += value.cym
+            min_accumulated_array.append(value)
 
             if (i + 1) % n_consecutives == 0:
-                if minAccumulated < minTotal:
-                    minTotal = minAccumulated
-                    aMinTotal = aMinAccumulated
-                minAccumulated = 0
-                aMinAccumulated = []
+                if min_accumulated < min_total:
+                    min_total = min_accumulated
+                    min_total_array = min_accumulated_array
+                min_accumulated = 0
+                min_accumulated_array = []
         a_PVPC.pop(0)
 
-    return aMinTotal
+    return min_total_array
