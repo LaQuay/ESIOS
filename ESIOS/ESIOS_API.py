@@ -34,11 +34,11 @@ class ESIOS_API(object):
 
         return headers
 
-    def get_pvpc_data(self, decimals):
-        """ Returns the pvcp elements in the current day.
+    def get_pvpc_data(self, decimals=4):
+        """ Returns the pvpc elements in the current day.
 
         Parameters:
-        decimals - int - Decimals of each value in PVPC
+        decimals - int - Decimals of each value in PVPC, default is 4
 
         Return:
         Array of PVPC elements.
